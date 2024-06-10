@@ -1,28 +1,16 @@
-# main.py -- put your code here!
+""" import dht
 import machine
 import time
 
-adc = machine.ADC(27)
+tempSensor = dht.DHT11(machine.Pin(27))     # DHT11 Constructor 
+# tempSensor = dht.DHT22(machine.Pin(27))   # DHT22 Constructor
 
-sf = 4095/65535 # Scale factor
-volt_per_adc = (3.3 / 4095)
-
-while True: 
-  time.sleep(2)
-  millivolts = adc.read_u16()
-
-  adc_12b = millivolts * sf
-
-  volt = adc_12b * volt_per_adc
-
-  # MCP9700 characteristics
-  dx = abs(50 - 0)
-  dy = abs(0 - 0.5)
-
-  shift = volt - 0.5
-
-  temp = shift / (dy / dx)
-  print("temp = ", temp)
-  #print("mv = ", millivolts)
-  #print("volt = ", volt)
-  time.sleep(1)
+while True:
+    try:
+        tempSensor.measure()
+        temperature = tempSensor.temperature()
+        humidity = tempSensor.humidity()
+        print("Temperature is {} degrees Celsius and Humidity is {}%".format(temperature, humidity))
+    except Exception as error:
+        print("Exception occurred", error)
+    time.sleep(2) """
