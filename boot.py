@@ -32,7 +32,7 @@ def http_get(url = 'http://detectportal.firefox.com/'):
     s.send(bytes('GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' % (path, host), 'utf8'))    
     time.sleep(1)                           # Sleep for a second
     rec_bytes = s.recv(10000)               # Receve response
-    print(rec_bytes)                        # Print the response
+    print(rec_bytes.decode("utf-8"))        # Print the response
     s.close()                               # Close connection
 
 # WiFi Connection
