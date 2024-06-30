@@ -73,7 +73,7 @@ class Dust:
             density = 0
         return density
     
-    def big_read(self): 
+    def calculate_average_dust_density(self): 
         lst = []
         for i in range(100):
             lst.append(self.read())
@@ -89,7 +89,7 @@ try:
     while True :
         led.on()
   
-        average_density = Dust.big_read()    
+        average_density = Dust.calculate_average_dust_density()    
         #print(f'The average dust concentration is: {average_density} ug/m3')
         sendData(DEVICE_LABEL, VARIABLE_LABEL, average_density)
         led.off()
