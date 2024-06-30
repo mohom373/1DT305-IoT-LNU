@@ -1,11 +1,14 @@
 from machine import Pin, ADC
 import utime
 
+from keys import DEVICE_LABEL, VARIABLE_LABEL
+from boot import sendData
+
 #Select ADC input 0 (GPIO26)
 COV_RATIO     =  0.2 #ug/mmm / mv
 NO_DUST_VOLTAGE = 400  #mv
 SYS_VOLTAGE = 3300
-
+DELAY = 15
 
 class Dust:
     def __init__(self):
@@ -72,20 +75,26 @@ class Dust:
     
     def big_read(self): 
         lst = []
-        for i in range(45):
+        for i in range(100):
             lst.append(self.read())
-            utime.sleep(0.05)
+            utime.sleep(0.1)
             
         new_lst = self._remove_outliers(lst)
         return sum(new_lst) / len(new_lst)
 
 try:
     Dust=Dust()
-
+    # Set the OUTPUT pin to on-board LED
+    led = Pin("LED", Pin.OUT)
     while True :
-        
+        led.on()
+  
         average_density = Dust.big_read()    
-        print(f'The average dust concentration is: {average_density} ug/m3')  
+        #print(f'The average dust concentration is: {average_density} ug/m3')
+        sendData(DEVICE_LABEL, VARIABLE_LABEL, average_density)
+        led.off()
+        utime.sleep(DELAY)  
+
         
 except Exception as e:
     print(e + " Anything")
